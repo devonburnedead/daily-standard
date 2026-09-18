@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Standard">
@@ -279,16 +280,17 @@
   .cal {
     display: grid;
     grid-auto-flow: column;
-    grid-auto-columns: minmax(0, 1fr);
-    grid-template-rows: repeat(7, auto);
-    gap: 4px;
-    min-width: 330px;
+    grid-auto-columns: 13px;
+    grid-template-rows: repeat(7, 13px);
+    gap: 3px;
+    width: max-content;
   }
-  .months { display: flex; justify-content: space-between; margin-bottom: 7px; min-width: 330px; }
+  .months { display: flex; justify-content: space-between; margin-bottom: 7px; min-width: 413px; }
 
   .cell {
-    aspect-ratio: 1;
-    border-radius: 4px;
+    width: 13px;
+    height: 13px;
+    border-radius: 3px;
     background: var(--empty);
     border: 0;
     padding: 0;
@@ -414,8 +416,8 @@
   </section>
 
   <section class="stats">
-    <div class="stat"><span class="label">Streak</span><span class="n" id="statStreak">0</span><span class="label" id="statStreakSub">days at bare min</span></div>
-    <div class="stat"><span class="label">Last 30</span><span class="n" id="statLogged">0</span><span class="label">days logged</span></div>
+    <div class="stat"><span class="label">Streak</span><span class="n" id="statStreak">0</span><span class="label" id="statStreakSub">bare min</span></div>
+    <div class="stat"><span class="label">Last 30</span><span class="n" id="statLogged">0</span><span class="label">logged</span></div>
     <div class="stat"><span class="label">Full days</span><span class="n" id="statFull">0</span><span class="label">this month</span></div>
   </section>
 
@@ -703,7 +705,6 @@
     const el = $("statStreak");
     el.textContent = s;
     el.classList.toggle("go", s >= 3);
-    $("statStreakSub").textContent = s === 1 ? "day at bare min" : "days at bare min";
     $("statLogged").textContent = loggedInLast(30);
     $("statFull").textContent = fullDaysThisMonth();
   }
@@ -747,6 +748,8 @@
       cells.set(k, cell);
       cal.appendChild(cell);
     }
+    const scroller = document.querySelector(".cal-scroll");
+    scroller.scrollLeft = scroller.scrollWidth;
   }
 
   function paintCal() {
